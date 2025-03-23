@@ -1,6 +1,5 @@
 import streamlit as st
 import spacy
-import subprocess
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from transformers import pipeline
@@ -17,12 +16,7 @@ def load_sentiment_analyzer():
 
 # Load models with progress feedback
 with st.spinner("Loading NLP models..."):
-    try:
-        nlp = spacy.load("en_core_web_sm")
-    except OSError:
-        st.warning("Downloading spaCy model 'en_core_web_sm'—this might take a sec...")
-        subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"], check=True)
-        nlp = spacy.load("en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm")  # Assumes model is pre-installed
     summarizer = load_summarizer()
     sentiment_analyzer = load_sentiment_analyzer()
 st.success("Models loaded successfully!")
