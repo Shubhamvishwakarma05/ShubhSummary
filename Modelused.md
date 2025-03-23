@@ -38,4 +38,3 @@ These models make “ShubhSummary” legit:
 - **DistilBERT**: Adds a practical, real-world feature (sentiment).
 - **spaCy**: Grounds it in solid text processing.
 
-If you’re curious, you could swap `t5-small` for `t5-base` (bigger, better outputs, but slower) or play with a custom sentiment model—let me know if you want to tweak it! Happy with these, bro? What’s your next question?
