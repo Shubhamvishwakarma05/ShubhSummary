@@ -1,7 +1,8 @@
-flask
-flask-cors
-gunicorn
-torch
-transformers
-sentencepiece  # ✅ Required for Pegasus tokenizer
-
+streamlit==1.40.1
+spacy==3.7.6
+numpy==1.24.4
+nltk==3.9.1
+scikit-learn==1.3.2
+transformers==4.44.2
+torch==2.4.1
+rouge-score==0.1.2
