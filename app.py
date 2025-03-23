@@ -1,16 +1,30 @@
 import streamlit as st
 import spacy
+import subprocess
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from transformers import pipeline
 import nltk
 nltk.download('punkt')
 
+@st.cache_resource
+def load_summarizer():
+    return pipeline("summarization", model="t5-small", framework="pt")
+
+@st.cache_resource
+def load_sentiment_analyzer():
+    return pipeline("sentiment-analysis")
+
 # Load models with progress feedback
 with st.spinner("Loading NLP models..."):
-    nlp = spacy.load("en_core_web_sm")
-    summarizer = pipeline("summarization", model="t5-small", framework="pt")
-    sentiment_analyzer = pipeline("sentiment-analysis")
+    try:
+        nlp = spacy.load("en_core_web_sm")
+    except OSError:
+        st.warning("Downloading spaCy model 'en_core_web_sm'—this might take a sec...")
+        subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"], check=True)
+        nlp = spacy.load("en_core_web_sm")
+    summarizer = load_summarizer()
+    sentiment_analyzer = load_sentiment_analyzer()
 st.success("Models loaded successfully!")
 
 # Extractive summarization function
@@ -41,34 +55,30 @@ def analyze_sentiment(text):
 
 # Streamlit UI with enhancements
 def main():
-    # Default to dark theme
     st.markdown("""
         <style>
         .stApp {
-            background-color: #2c3e50;  /* Dark theme default */
-            color: #ecf0f1;  /* Light text for contrast */
+            background-color: #2c3e50;
+            color: #ecf0f1;
         }
         .stButton>button {
-            background-color: #e74c3c;  /* Red button */
+            background-color: #e74c3c;
             color: white;
         }
         .stSlider .stSliderLabel {
-            color: #ecf0f1;  /* Light labels */
+            color: #ecf0f1;
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # Title and intro with ShubhSummary
     st.title("✨ ShubhSummary ✨")
     st.markdown("Summarize text effortlessly with advanced NLP techniques. Built by Shubham Vishwakarma.")
 
-    # Sidebar settings
     st.sidebar.header("⚙️ Settings")
     mode = st.sidebar.selectbox("Summary Mode", ["Extractive", "Abstractive", "Hybrid"], help="Choose how to summarize: key sentences, rephrased text, or both.")
     num_sentences = st.sidebar.slider("Extractive Sentences", 1, 5, 2, help="Number of sentences for extractive summary.")
     max_len = st.sidebar.slider("Abstractive Max Length", 50, 200, 100, help="Max words for abstractive summary.")
 
-    # How to Use Section (Collapsible)
     with st.expander("📖 How to Use ShubhSummary", expanded=False):
         st.markdown("""
         Welcome to **ShubhSummary**! Here’s how to get started:
@@ -84,11 +94,9 @@ def main():
         - **Tip**: Try short news snippets or long articles to see the magic!
         """)
 
-    # Text input
     st.subheader("📝 Enter Your Text")
     input_text = st.text_area("Paste your text here...", height=200, help="Enter any text—articles, blogs, or notes!")
 
-    # Summarize button
     if st.button("Generate Summary 🚀"):
         if not input_text.strip():
             st.error("Please enter some text!")
@@ -110,7 +118,6 @@ def main():
                     label, score = analyze_sentiment(abs_summary)
                     st.write(f"**Sentiment**: {label} (Confidence: {score:.2f})")
 
-    # Footer with GitHub, LinkedIn, and flair
     st.markdown("---")
     st.markdown("""
         **Built with ❤️ by Shubham Vishwakarma**  
@@ -119,17 +126,16 @@ def main():
         Add ShubhSummary to your data science portfolio—fork it, tweak it, make it yours! 🚀
     """)
 
-    # Theme toggle (Dark default, switch to Light)
-    theme = st.sidebar.selectbox("🎨 Theme", ["Dark", "Light"], index=0)  # Dark is index 0, default
+    theme = st.sidebar.selectbox("🎨 Theme", ["Dark", "Light"], index=0)
     if theme == "Light":
         st.markdown("""
             <style>
             .stApp {
-                background-color: #f0f2f6;  /* Light theme */
+                background-color: #f0f2f6;
                 color: #333333;
             }
             .stButton>button {
-                background-color: #4CAF50;  /* Green button */
+                background-color: #4CAF50;
             }
             .stSlider .stSliderLabel {
                 color: #2c3e50;
