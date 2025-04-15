@@ -9,6 +9,28 @@ A powerful, interactive text summarization tool built with Python, Streamlit, an
 ## 🌟 Features
 ![image](https://github.com/user-attachments/assets/21e5f337-369b-400d-862d-9ef441a70fa9)
 
++---------------------+       +---------------------+       +---------------------+
+|   User Input        |       |   Preprocessing     |       |   Summarization     |
+|   (Text via         | ----> |   (spaCy, NLTK)     | ----> |   - Extractive      |
+|    Streamlit UI)    |       |   - Tokenization    |       |     (TF-IDF)        |
++---------------------+       |   - Sentence Split  |       |   - Abstractive     |
+                              +---------------------+       |     (T5 Model)      |
+                                                           +---------------------+
+                                                                    |
+                                                                    v
+                                                           +---------------------+
+                                                           | Sentiment Analysis  |
+                                                           |   (DistilBERT)      |
+                                                           +---------------------+
+                                                                    |
+                                                                    v
+                                                           +---------------------+
+                                                           | Output Display      |
+                                                           |   (Streamlit UI)    |
+                                                           |   - Summaries       |
+                                                           |   - Sentiment       |
+                                                           +---------------------+
+
 - **Hybrid Summarization**:
   - **Extractive**: Pulls key sentences using TF-IDF scoring (1-5 sentences, adjustable).
   - **Abstractive**: Generates concise, rephrased summaries with the T5 model (50-200 words, adjustable).
