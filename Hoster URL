@@ -1,1 +1,13 @@
 https://shuubhsummary.streamlit.app/
+
+
++----+--------------------------------+-------------------+---------------------------+---------------------------+
+| ID | Test Case                      | Input             | Expected Output           | Result                    |
++----+--------------------------------+-------------------+---------------------------+---------------------------+
+| 1  | Extractive Summarization       | 500-word article  | 2 key sentences, ~1-2s    | Pass, accurate sentences  |
+| 2  | Abstractive Summarization      | 300-word text     | 100-word summary, ~5-10s  | Pass, coherent summary    |
+| 3  | Sentiment Analysis             | “Great product!”  | Positive, score >0.9      | Pass, correct label       |
+| 4  | Hybrid Mode                    | 200-word post     | Both summaries, <15s      | Pass, no overlap          |
+| 5  | Empty Input Error              | Empty text        | Error: “Enter text!”      | Pass, user-friendly       |
+| 6  | Cloud Wake-Up                  | Access URL        | Loads in 10-30s           | Pass, stable post-sleep   |
++----+--------------------------------+-------------------+---------------------------+---------------------------+
